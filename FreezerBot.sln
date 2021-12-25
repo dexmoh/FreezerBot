@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreezerBot", "FreezerBot\FreezerBot.csproj", "{D187067B-4BD9-4CF1-8C8A-F5E911964FE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D187067B-4BD9-4CF1-8C8A-F5E911964FE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D187067B-4BD9-4CF1-8C8A-F5E911964FE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D187067B-4BD9-4CF1-8C8A-F5E911964FE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D187067B-4BD9-4CF1-8C8A-F5E911964FE3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B60A6D4A-6C8D-423F-A7A6-265F08187B7C}
+	EndGlobalSection
+EndGlobal

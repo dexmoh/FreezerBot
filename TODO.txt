@@ -1,0 +1,14 @@
+write help message					-- done!
+write about message					-- done!
+create delete command				-- done!
+make bot reply to "bitch" messages	-- bitch!!!
+create enable/disable command
+put the bot up on github
+add frosty to WEH! team
+POSSUM IMAGE SEARCH!!!!!			-- done!
+opossum facts command				-- done!
+pins should be server specific
+set status message					-- done!
+rename the bot
+add help verb to every command		-- done!
+media link video converter
