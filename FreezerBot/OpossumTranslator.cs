@@ -7,7 +7,7 @@ namespace FreezerBot
         public static string Translate(string[] strings, int startingElement = 0)
         {
             string translatedStr = "";
-            Random rand = new Random(69); // haha funny number
+            Random rand = new Random();
 
             for (int i = startingElement; i < strings.Length; i++)
             {
