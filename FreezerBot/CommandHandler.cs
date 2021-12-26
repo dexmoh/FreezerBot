@@ -76,7 +76,7 @@ namespace FreezerBot
 
                     Random randFact = new Random();
                     int randomFact = randFact.Next(53);
-                    string fact = "COOL OPOSSUM FACT:";
+                    string fact = "COOL OPOSSUM FACT: ";
                     fact += File.ReadLines(@"data\facts.txt").ElementAtOrDefault(randomFact);
 
                     await msg.Channel.SendMessageAsync(fact);
