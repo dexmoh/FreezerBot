@@ -91,7 +91,28 @@ namespace FreezerBot
                     await PinComAsync();
                     break;
                 case "lookup":
-                    if (argsLen == 2 || ((argsLen == 3) && (args[2] == "help")))
+                    if (argsLen == 2)
+                    {
+                        int counter = 0;
+                        string list = "";
+                        foreach (string line in File.ReadLines(@"data\pins.txt"))
+                        {
+                            if (counter % 2 == 0)
+                                list += line + "\n";
+
+                            counter++;
+                        }
+
+                        if (list == string.Empty)
+                        {
+                            await msg.Channel.SendMessageAsync("No saved pins found. Add some by using \"poss pin <keyword>\" command!");
+                            break;
+                        }
+
+                        await msg.Channel.SendMessageAsync("**List of all the pinned files:**\n" + list);
+                        break;
+                    }
+                    else if ((argsLen == 3) && (args[2] == "help"))
                     {
                         await msg.Channel.SendMessageAsync($"```Command usage: {prefix} lookup <keyword>\n...\nLook up saved files.```");
                         break;
