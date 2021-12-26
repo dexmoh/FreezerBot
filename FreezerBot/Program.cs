@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord;
@@ -52,6 +53,11 @@ namespace FreezerBot
 
         private Task LogAsync(LogMessage msg)
         {
+            // Log the messages to a file.
+            StreamWriter sw = new StreamWriter(@"data\debug.log", true);
+            sw.WriteLine(msg.ToString());
+            sw.Close();
+
             Console.WriteLine(msg.ToString());
             return Task.CompletedTask;
         }
