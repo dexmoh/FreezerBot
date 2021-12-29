@@ -16,17 +16,17 @@ class Program
     public static bool isRunning;
 
     // Our bot's prefix.
-    private readonly string prefix;
+    public static string prefix;
 
-    // ID value associated with master account.
-    private readonly ulong masterId;
+    // Bot author's discord account ID.
+    private readonly ulong adminID;
 
     Program()
     {
         isRunning = true;
 
         prefix = System.IO.File.ReadAllText(@"data\prefix.txt");
-        masterId = Convert.ToUInt64(System.IO.File.ReadAllText(@"data\master.txt"));
+        adminID = Convert.ToUInt64(System.IO.File.ReadAllText(@"data\master.txt"));
 
         _client = new DiscordSocketClient();
         _client.Log += LogAsync;
@@ -79,10 +79,10 @@ class Program
         if (msg.Author.IsBot)
             return;
 
-        bool isMaster = false;
-        if (msg.Author.Id == masterId)
-            isMaster = true;
+        bool isAdmin = false;
+        if (msg.Author.Id == adminID)
+            isAdmin = true;
 
-        await CommandHandler.HandleCommandAsync(msg, args, argsLen, prefix, isMaster);
+        await CommandHandler.HandleCommandAsync(msg, args, argsLen, isAdmin);
     }
 }
