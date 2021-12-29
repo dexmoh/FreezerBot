@@ -77,7 +77,7 @@ public static class CommandHandler
                     break;
                 }
 
-                await Pins.Pin(msg, args, argsLen);
+                await Pins.PinAsync(msg, args, argsLen);
                 break;
             case "lookup":
                 if (argsLen == 2)
@@ -107,7 +107,7 @@ public static class CommandHandler
                     break;
                 }
 
-                await Pins.Lookup(msg, args, argsLen);
+                await Pins.LookupAsync(msg, args, argsLen);
                 break;
             case "delete":
                 if (argsLen == 2 || ((argsLen == 3) && (args[2] == "help")))
@@ -116,7 +116,7 @@ public static class CommandHandler
                     break;
                 }
 
-                await Pins.Delete(msg, args, argsLen);
+                await Pins.DeleteAsync(msg, args, argsLen);
                 break;
             case "shutdown":
                 if ((argsLen == 3) && (args[2] == "help"))

@@ -8,7 +8,7 @@ namespace FreezerBot;
 
 public static class Pins
 {
-    public static async Task Pin(SocketMessage msg, string[] args, int argsLen)
+    public static async Task PinAsync(SocketMessage msg, string[] args, int argsLen)
     {
         // Fetch keyword.
         string keyword = "";
@@ -82,7 +82,7 @@ public static class Pins
         await msg.Channel.SendMessageAsync($"Pinned! Use: `{Program.prefix} lookup {keyword}` to look up the pinned files.");
     }
 
-    public static async Task Lookup(SocketMessage msg, string[] args, int argsLen)
+    public static async Task LookupAsync(SocketMessage msg, string[] args, int argsLen)
     {
         // Fetch keyword.
         string keyword = "";
@@ -128,7 +128,7 @@ public static class Pins
         await msg.Channel.SendMessageAsync(urls);
     }
 
-    public static async Task Delete(SocketMessage msg, string[] args, int argsLen)
+    public static async Task DeleteAsync(SocketMessage msg, string[] args, int argsLen)
     {
         // Fetch keyword.
         string keyword = "";
