@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Discord;
 using Discord.WebSocket;
 
 namespace FreezerBot;
@@ -32,7 +33,31 @@ public static class CommandHandler
                 await msg.Channel.SendMessageAsync(string.Format(System.IO.File.ReadAllText(@"data\help.txt"), Program.prefix));
                 break;
             case "about":
-                await msg.Channel.SendMessageAsync(System.IO.File.ReadAllText(@"data\about.txt"));
+                var embedAuthor = new EmbedAuthorBuilder()
+                    .WithName("About me!")
+                    .WithIconUrl("https://imgur.com/dRLQcoP.png");
+                var embedFooter = new EmbedFooterBuilder()
+                    .WithText($"Requested by {msg.Author.Username}.")
+                    .WithIconUrl(msg.Author.GetAvatarUrl());
+                var embedField1 = new EmbedFieldBuilder()
+                    .WithName("Intro")
+                    .WithValue("Hi, my name is Chilly, I'm an opossum! I live in the Freezer, it's quite cold in here! " +
+                    "I'm still in very early development and some features might not work as intended, so cold tight! " +
+                    "Currently being hosted on Microsoft Azure VM. Built with Discord.Net (.NET 6.0).")
+                    .WithIsInline(true);
+                var embedField2 = new EmbedFieldBuilder()
+                    .WithName("GitHub")
+                    .WithValue("Check out my GitHub page by clicking [here](https://github.com/Ewwmewgewd/FreezerBot).\n" +
+                    "You can suggest new features and changes by opening a new issue, or you can contribute by opening a pull request!");
+                var embed = new EmbedBuilder()
+                    .AddField(embedField1)
+                    .AddField(embedField2)
+                    .WithAuthor(embedAuthor)
+                    .WithFooter(embedFooter)
+                    .WithColor(Color.Teal)
+                    .Build();
+
+                await msg.Channel.SendMessageAsync(null, false, embed);
                 break;
             case "translate":
             case "say":
