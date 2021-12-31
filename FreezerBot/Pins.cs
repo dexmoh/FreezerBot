@@ -133,7 +133,7 @@ public static class Pins
         await msg.Channel.SendMessageAsync($"Successfully deleted \"{keyword}\".");
     }
 
-    public static async Task ListAsync(SocketMessage msg, string[] args, int argsLen)
+    public static async Task ListAsync(SocketMessage msg)
     {
         string pinsPath = GetPinsPath(msg);
         int counter = 0;

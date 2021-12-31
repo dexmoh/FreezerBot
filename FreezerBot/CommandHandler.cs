@@ -124,7 +124,7 @@ public static class CommandHandler
                 break;
             case "list":
                 if (argsLen == 2)
-                    await Pins.ListAsync(msg, args, argsLen);
+                    await Pins.ListAsync(msg);
                 else if ((argsLen == 3) && (args[2] == "help"))
                     await msg.Channel.SendMessageAsync($"```Command usage: {Program.prefix} list\n...\nShow a list of all saved embeds.```");
                 break;
