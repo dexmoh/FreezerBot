@@ -10,39 +10,22 @@ public static class Pins
 {
     public static async Task PinAsync(SocketMessage msg, string[] args, int argsLen)
     {
-        // Fetch keyword.
-        string keyword = "";
-        for (int i = 2; i < argsLen; i++)
-            keyword += args[i] + " ";
-
-        // Check if keyword string is empty.
-        if (keyword == string.Empty)
-        {
-            await msg.Channel.SendMessageAsync("You have to provide a keyword.");
-            return;
-        }
-
-        // Remove the space at the end. 
-        keyword = keyword.Remove(keyword.Length - 1);
+        string keyword = GetKeyword(msg, args, argsLen);
+        string pinsPath = GetPinsPath(msg);
 
         // Check if the keyword already exists.
         int counter = 0;
-        bool keywordExists = false;
 
-        foreach (string line in File.ReadLines(@"data\pins.txt"))
+        foreach (string line in File.ReadLines(pinsPath))
         {
             if ((counter % 2 == 0) && line == keyword)
             {
                 await msg.Channel.SendMessageAsync("That keyword already exists.");
-                keywordExists = true;
-                break;
+                return;
             }
 
             counter++;
         }
-
-        if (keywordExists)
-            return;
 
         // Check if message is a reply.
         var replyMsgRef = msg.Reference;
@@ -56,7 +39,7 @@ public static class Pins
         IMessage replyMsg = msg.Channel.GetMessageAsync(replyMsgRef.MessageId.Value).Result;
 
         // The string we'll store the URLs in.
-        string urls = "";
+        string urls = string.Empty;
 
         // Get embed URLs.
         foreach (Embed replyEmbed in replyMsg.Embeds)
@@ -74,7 +57,7 @@ public static class Pins
         }
 
         // Write the keyword and the urls to a text file.
-        StreamWriter sw = new StreamWriter(@"data\pins.txt", true);
+        StreamWriter sw = new StreamWriter(pinsPath, true);
         sw.WriteLine(keyword);
         sw.WriteLine(urls);
         sw.Close();
@@ -84,26 +67,14 @@ public static class Pins
 
     public static async Task LookupAsync(SocketMessage msg, string[] args, int argsLen)
     {
-        // Fetch keyword.
-        string keyword = "";
-        for (int i = 2; i < argsLen; i++)
-            keyword += args[i] + " ";
-
-        // Check if keyword string is empty.
-        if (keyword == string.Empty)
-        {
-            await msg.Channel.SendMessageAsync("You have to provide a keyword.");
-            return;
-        }
-
-        // Remove the space at the end. 
-        keyword = keyword.Remove(keyword.Length - 1);
+        string keyword = GetKeyword(msg, args, argsLen);
+        string pinsPath = GetPinsPath(msg);
 
         // Check if the keyword exists.
         int counter = 0;
         bool keywordExists = false;
 
-        foreach (string line in File.ReadLines(@"data\pins.txt"))
+        foreach (string line in File.ReadLines(pinsPath))
         {
             if ((counter % 2 == 0) && line == keyword)
             {
@@ -121,8 +92,7 @@ public static class Pins
         }
 
         // Fetch the URLs.
-        string urls;
-        urls = File.ReadLines(@"data\pins.txt").ElementAtOrDefault(counter + 1);
+        string urls = File.ReadLines(pinsPath).ElementAtOrDefault(counter + 1);
 
         await msg.Channel.SendMessageAsync(keyword);
         await msg.Channel.SendMessageAsync(urls);
@@ -130,27 +100,15 @@ public static class Pins
 
     public static async Task DeleteAsync(SocketMessage msg, string[] args, int argsLen)
     {
-        // Fetch keyword.
-        string keyword = "";
-        for (int i = 2; i < argsLen; i++)
-            keyword += args[i] + " ";
-
-        // Check if keyword string is empty.
-        if (keyword == string.Empty)
-        {
-            await msg.Channel.SendMessageAsync("You have to provide a keyword.");
-            return;
-        }
-
-        // Remove the space at the end. 
-        keyword = keyword.Remove(keyword.Length - 1);
+        string keyword = GetKeyword(msg, args, argsLen);
+        string pinsPath = GetPinsPath(msg);
 
         // Check if the keyword exists and store the pins file to a string.
         int counter = 0;
         int keywordLine = -1;
-        string pins = "";
+        string pins = string.Empty;
 
-        foreach (string line in File.ReadLines(@"data\pins.txt"))
+        foreach (string line in File.ReadLines(pinsPath))
         {
             counter++;
 
@@ -171,7 +129,66 @@ public static class Pins
             return;
         }
 
-        File.WriteAllText(@"data\pins.txt", pins);
+        File.WriteAllText(pinsPath, pins);
         await msg.Channel.SendMessageAsync($"Successfully deleted \"{keyword}\".");
+    }
+
+    public static async Task ListAsync(SocketMessage msg, string[] args, int argsLen)
+    {
+        string pinsPath = GetPinsPath(msg);
+        int counter = 0;
+        string list = string.Empty;
+
+        foreach (string line in File.ReadLines(pinsPath))
+        {
+            if (counter % 2 == 0)
+                list += line + "\n";
+
+            counter++;
+        }
+
+        if (list == string.Empty)
+        {
+            await msg.Channel.SendMessageAsync("No saved pins found. Add some by using \"poss pin <keyword>\" command!");
+            return;
+        }
+
+        await msg.Channel.SendMessageAsync("**List of all the pinned files:**\n" + list);
+    }
+
+    private static string GetKeyword(SocketMessage msg, string[] args, int argsLen)
+    {
+        // Fetch the keyword.
+        string keyword = string.Empty;
+        for (int i = 2; i < argsLen; i++)
+            keyword += args[i] + " ";
+
+        if (keyword == string.Empty) // Is this even needed anymore?
+        {
+            msg.Channel.SendMessageAsync("You have to provide a keyword.");
+            return string.Empty;
+        }
+
+        keyword = keyword.Remove(keyword.Length - 1);
+
+        return keyword;
+    }
+
+    private static string GetPinsPath(SocketMessage msg)
+    {
+        // Check if the server directory exists. Create a new one if not.
+        var channel = msg.Channel as SocketGuildChannel;
+        var guild = channel.Guild;
+
+        string serverPath = @$"data\servers\{guild.Id}";
+        string pinsPath = $@"{serverPath}\pins.txt";
+
+        if (!Directory.Exists(serverPath))
+        {
+            Directory.CreateDirectory(serverPath);
+            File.Create(pinsPath).Close();
+        }
+
+        return pinsPath;
     }
 }
