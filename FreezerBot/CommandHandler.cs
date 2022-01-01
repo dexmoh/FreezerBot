@@ -30,34 +30,70 @@ public static class CommandHandler
         {
             case "help":
             case "commands":
-                await msg.Channel.SendMessageAsync(string.Format(System.IO.File.ReadAllText(@"data\help.txt"), Program.Prefix));
-                break;
-            case "about":
-                var embedAuthor = new EmbedAuthorBuilder()
-                    .WithName("About me!")
+                var helpAuthor = new EmbedAuthorBuilder()
+                    .WithName("Help menu!")
                     .WithIconUrl("https://imgur.com/dRLQcoP.png");
-                var embedFooter = new EmbedFooterBuilder()
+                var helpFooter = new EmbedFooterBuilder()
                     .WithText($"Requested by {msg.Author.Username}.")
                     .WithIconUrl(msg.Author.GetAvatarUrl());
-                var embedField1 = new EmbedFieldBuilder()
+                var helpField1 = new EmbedFieldBuilder()
+                    .WithName("Info")
+                    .WithValue($"Prefix your messages with `{Program.Prefix}` to access bot's commands.\n" +
+                    $" Use `{Program.Prefix} <command> help` to get more information regarding a specific command.\n" +
+                    $"You can suggest new features and report bugs on our GitHub page. Use `{Program.Prefix} about` command to find out more.")
+                    .WithIsInline(true);
+                var helpField2 = new EmbedFieldBuilder()
+                    .WithName("Basic Commands")
+                    .WithValue("`help/commands` - Show help menu.\n" +
+                    "`about` - Show about page.\n" +
+                    "`translate/say` - Translate human into opossum tongue!\n" +
+                    "`show poss` - Send a cute opossum image.\n" +
+                    "`facts` - Tell a random opossum fact.\n");
+                var helpField3 = new EmbedFieldBuilder()
+                    .WithName("Pins")
+                    .WithValue("The bot's main feature is the ability to save embeds (images, gifs, videos) from a message and store them under a keyword. " +
+                    "You can then use that keyword to preview the saved embeds.\n\n" +
+                    $"Reply to a message with `{Program.Prefix} pin <keyword>` to save its embeds.\n" +
+                    $"Use `{Program.Prefix} lookup <keyword>` to lookup saved embeds.\n" +
+                    $"Use `{Program.Prefix} delete <keyword>` to delete saved embeds.\n" +
+                    $"Use `{Program.Prefix} list` to show a list of all saved embeds.");
+                var helpEmbed = new EmbedBuilder()
+                    .AddField(helpField1)
+                    .AddField(helpField2)
+                    .AddField(helpField3)
+                    .WithAuthor(helpAuthor)
+                    .WithFooter(helpFooter)
+                    .WithColor(Color.Teal)
+                    .Build();
+
+                await msg.Channel.SendMessageAsync(null, false, helpEmbed);
+                break;
+            case "about":
+                var aboutAuthor = new EmbedAuthorBuilder()
+                    .WithName("About me!")
+                    .WithIconUrl("https://imgur.com/dRLQcoP.png");
+                var aboutFooter = new EmbedFooterBuilder()
+                    .WithText($"Requested by {msg.Author.Username}.")
+                    .WithIconUrl(msg.Author.GetAvatarUrl());
+                var aboutField1 = new EmbedFieldBuilder()
                     .WithName("Intro")
                     .WithValue("Hi, my name is Chilly, I'm an opossum! I live in the Freezer, it's quite cold in here! " +
                     "I'm still in very early development and some features might not work as intended, so cold tight! " +
                     "Currently being hosted on Microsoft Azure VM. Built with Discord.Net (.NET 6.0).")
                     .WithIsInline(true);
-                var embedField2 = new EmbedFieldBuilder()
+                var aboutField2 = new EmbedFieldBuilder()
                     .WithName("GitHub")
                     .WithValue("Check out my GitHub page by clicking [here](https://github.com/Ewwmewgewd/FreezerBot).\n" +
-                    "You can suggest new features and changes by opening a new issue, or you can contribute by opening a pull request!");
-                var embed = new EmbedBuilder()
-                    .AddField(embedField1)
-                    .AddField(embedField2)
-                    .WithAuthor(embedAuthor)
-                    .WithFooter(embedFooter)
+                    "You can suggest new features, changes and report bugs by opening a new issue, or you can contribute by opening a pull request!");
+                var aboutEmbed = new EmbedBuilder()
+                    .AddField(aboutField1)
+                    .AddField(aboutField2)
+                    .WithAuthor(aboutAuthor)
+                    .WithFooter(aboutFooter)
                     .WithColor(Color.Teal)
                     .Build();
 
-                await msg.Channel.SendMessageAsync(null, false, embed);
+                await msg.Channel.SendMessageAsync(null, false, aboutEmbed);
                 break;
             case "translate":
             case "say":
