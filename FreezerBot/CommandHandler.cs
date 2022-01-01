@@ -126,10 +126,18 @@ public static class CommandHandler
 
                 var randFact = new Random();
                 int randomFact = randFact.Next(53);
-                string fact = "COOL OPOSSUM FACT: ";
-                fact += File.ReadLines(@"data\facts.txt").ElementAtOrDefault(randomFact);
 
-                await msg.Channel.SendMessageAsync(fact);
+                // Build the embed.
+                var factField1 = new EmbedFieldBuilder()
+                    .WithName("COOL OPOSSUM FACT!")
+                    .WithValue(File.ReadLines(@"data\facts.txt").ElementAtOrDefault(randomFact))
+                    .WithIsInline(true);
+                var factEmbed = new EmbedBuilder()
+                    .AddField(factField1)
+                    .WithColor(Color.Teal)
+                    .Build();
+
+                await msg.Channel.SendMessageAsync(null, false, factEmbed);
                 break;
             case "pin":
                 if (argsLen == 2 || ((argsLen == 3) && (args[2] == "help")))
