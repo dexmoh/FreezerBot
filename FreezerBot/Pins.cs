@@ -142,7 +142,7 @@ public static class Pins
         foreach (string line in File.ReadLines(pinsPath))
         {
             if (counter % 2 == 0)
-                list += line + "\n";
+                list += $"- {line}\n";
 
             counter++;
         }
@@ -153,7 +153,17 @@ public static class Pins
             return;
         }
 
-        await msg.Channel.SendMessageAsync("**List of all the pinned files:**\n" + list);
+        // Build the embed.
+        var listField1 = new EmbedFieldBuilder()
+            .WithName("Here's a list of all the keywords!")
+            .WithValue(list)
+            .WithIsInline(true);
+        var listEmbed = new EmbedBuilder()
+            .AddField(listField1)
+            .WithColor(Color.Teal)
+            .Build();
+
+        await msg.Channel.SendMessageAsync(null, false, listEmbed);
     }
 
     private static string GetKeyword(SocketMessage msg, string[] args, int argsLen)
