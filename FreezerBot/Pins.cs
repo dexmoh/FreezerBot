@@ -28,7 +28,7 @@ public static class Pins
         }
 
         // Check if message is a reply.
-        var replyMsgRef = msg.Reference;
+        MessageReference replyMsgRef = msg.Reference;
         if (replyMsgRef == null)
         {
             await msg.Channel.SendMessageAsync("The message isnt a reply.");
@@ -50,19 +50,19 @@ public static class Pins
             urls += attachment.Url + " ";
 
         // Check if the string is empty.
-        if (urls == string.Empty)
+        if (urls.Trim() == string.Empty)
         {
             await msg.Channel.SendMessageAsync("The message has no embeds.");
             return;
         }
 
         // Write the keyword and the urls to a text file.
-        StreamWriter sw = new StreamWriter(pinsPath, true);
+        var sw = new StreamWriter(pinsPath, true);
         sw.WriteLine(keyword);
         sw.WriteLine(urls);
         sw.Close();
 
-        await msg.Channel.SendMessageAsync($"Pinned! Use: `{Program.prefix} lookup {keyword}` to look up the pinned files.");
+        await msg.Channel.SendMessageAsync($"Pinned! Use: '{Program.Prefix} lookup {keyword}' to look up the pinned files.");
     }
 
     public static async Task LookupAsync(SocketMessage msg, string[] args, int argsLen)
@@ -149,7 +149,7 @@ public static class Pins
 
         if (list == string.Empty)
         {
-            await msg.Channel.SendMessageAsync("No saved pins found. Add some by using \"poss pin <keyword>\" command!");
+            await msg.Channel.SendMessageAsync($"No saved pins found. Add some by using '{Program.Prefix} pin <keyword>' command!");
             return;
         }
 
@@ -158,16 +158,10 @@ public static class Pins
 
     private static string GetKeyword(SocketMessage msg, string[] args, int argsLen)
     {
-        // Fetch the keyword.
+        // Any string after the 2nd element of args array is considered part of the keyword.
         string keyword = string.Empty;
         for (int i = 2; i < argsLen; i++)
             keyword += args[i] + " ";
-
-        if (keyword == string.Empty) // Is this even needed anymore?
-        {
-            msg.Channel.SendMessageAsync("You have to provide a keyword.");
-            return string.Empty;
-        }
 
         keyword = keyword.Remove(keyword.Length - 1);
 
@@ -177,8 +171,8 @@ public static class Pins
     private static string GetPinsPath(SocketMessage msg)
     {
         // Check if the server directory exists. Create a new one if not.
-        var channel = msg.Channel as SocketGuildChannel;
-        var guild = channel.Guild;
+        SocketGuildChannel channel = msg.Channel as SocketGuildChannel;
+        SocketGuild guild = channel.Guild;
 
         string serverPath = @$"data\servers\{guild.Id}";
         string pinsPath = $@"{serverPath}\pins.txt";

@@ -30,7 +30,7 @@ public static class CommandHandler
         {
             case "help":
             case "commands":
-                await msg.Channel.SendMessageAsync(string.Format(System.IO.File.ReadAllText(@"data\help.txt"), Program.prefix));
+                await msg.Channel.SendMessageAsync(string.Format(System.IO.File.ReadAllText(@"data\help.txt"), Program.Prefix));
                 break;
             case "about":
                 var embedAuthor = new EmbedAuthorBuilder()
@@ -63,7 +63,7 @@ public static class CommandHandler
             case "say":
                 if (argsLen == 2 || ((argsLen == 3) && (args[2] == "help")))
                 {
-                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.prefix} translate/say <message>\n...\nTranslate human into opossum tongue!```");
+                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.Prefix} translate/say <message>\n...\nTranslate human into opossum tongue!```");
                     break;
                 }
 
@@ -72,11 +72,11 @@ public static class CommandHandler
             case "show":
                 if (argsLen == 2 || ((argsLen == 3) && (args[2] != "poss")))
                 {
-                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.prefix} show poss\n...\nSend a random opossum image!```");
+                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.Prefix} show poss\n...\nSend a random opossum image!```");
                     break;
                 }
 
-                Random randImage = new Random();
+                var randImage = new Random();
                 int randomImage = randImage.Next(77);
                 string url = File.ReadLines(@"data\cute opossum images.txt").ElementAtOrDefault(randomImage);
                 await msg.Channel.SendMessageAsync(url);
@@ -84,11 +84,11 @@ public static class CommandHandler
             case "facts":
                 if ((argsLen == 3) && (args[2] == "help"))
                 {
-                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.prefix} facts\n...\nSend a random opossum fact!```");
+                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.Prefix} facts\n...\nSend a random opossum fact!```");
                     break;
                 }
 
-                Random randFact = new Random();
+                var randFact = new Random();
                 int randomFact = randFact.Next(53);
                 string fact = "COOL OPOSSUM FACT: ";
                 fact += File.ReadLines(@"data\facts.txt").ElementAtOrDefault(randomFact);
@@ -98,7 +98,8 @@ public static class CommandHandler
             case "pin":
                 if (argsLen == 2 || ((argsLen == 3) && (args[2] == "help")))
                 {
-                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.prefix} pin <keyword>\n...\nReply to a message with this command to save its embeds. Use \"{Program.prefix} lookup <keyword>\" to look up saved files.```");
+                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.Prefix} pin <keyword>\n...\n" +
+                        $"Reply to a message with this command to save its embeds. Use '{Program.Prefix} lookup <keyword>' to look up saved files.```");
                     break;
                 }
 
@@ -107,7 +108,7 @@ public static class CommandHandler
             case "lookup":
                 if (argsLen == 2 || ((argsLen == 3) && (args[2] == "help")))
                 {
-                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.prefix} lookup <keyword>\n...\nLook up saved files.```");
+                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.Prefix} lookup <keyword>\n...\nLook up saved files.```");
                     break;
                 }
 
@@ -116,7 +117,7 @@ public static class CommandHandler
             case "delete":
                 if (argsLen == 2 || ((argsLen == 3) && (args[2] == "help")))
                 {
-                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.prefix} delete <keyword>\n...\nDelete saved embeds.```");
+                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.Prefix} delete <keyword>\n...\nDelete saved embeds.```");
                     break;
                 }
 
@@ -126,12 +127,12 @@ public static class CommandHandler
                 if (argsLen == 2)
                     await Pins.ListAsync(msg);
                 else if ((argsLen == 3) && (args[2] == "help"))
-                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.prefix} list\n...\nShow a list of all saved embeds.```");
+                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.Prefix} list\n...\nShow a list of all saved embeds.```");
                 break;
             case "shutdown":
                 if ((argsLen == 3) && (args[2] == "help"))
                 {
-                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.prefix} shutdown\n...\nShut down the bot. Only bot author can call this command.```");
+                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.Prefix} shutdown\n...\nShut down the bot. Only bot author can call this command.```");
                     break;
                 }
 
@@ -144,7 +145,7 @@ public static class CommandHandler
 
                 // Exit the program.
                 await msg.Channel.SendMessageAsync("Shutting down... :(");
-                Program.isRunning = false;
+                Program.IsRunning = false;
                 break;
             default:
                 break;

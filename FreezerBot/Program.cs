@@ -12,21 +12,21 @@ class Program
     // Discord client.
     private readonly DiscordSocketClient _client;
 
+    // Bot author's discord account ID.
+    private readonly ulong _adminID;
+
     // Flag used to check if the program is still running.
-    public static bool isRunning;
+    public static bool IsRunning;
 
     // Our bot's prefix.
-    public static string prefix;
-
-    // Bot author's discord account ID.
-    private readonly ulong adminID;
+    public static string Prefix;
 
     Program()
     {
-        isRunning = true;
+        IsRunning = true;
 
-        prefix = System.IO.File.ReadAllText(@"data\prefix.txt");
-        adminID = Convert.ToUInt64(System.IO.File.ReadAllText(@"data\master.txt"));
+        Prefix = System.IO.File.ReadAllText(@"data\prefix.txt");
+        _adminID = Convert.ToUInt64(System.IO.File.ReadAllText(@"data\master.txt"));
 
         _client = new DiscordSocketClient();
         _client.Log += LogAsync;
@@ -44,7 +44,7 @@ class Program
         await _client.StartAsync();
 
         // Keep running the program until its told to shutdown.
-        while (isRunning)
+        while (IsRunning)
             await Task.Delay(3000);
 
         await _client.StopAsync();
@@ -54,7 +54,7 @@ class Program
     private Task LogAsync(LogMessage msg)
     {
         // Log the messages to a file.
-        StreamWriter sw = new StreamWriter(@"data\debug.log", true);
+        var sw = new StreamWriter(@"data\debug.log", true);
         sw.WriteLine(msg.ToString());
         sw.Close();
 
@@ -73,14 +73,14 @@ class Program
         string[] args = msg.Content.ToLower().Split(' ');
         int argsLen = args.Length;
 
-        if (args[0] != prefix)
+        if (args[0] != Prefix)
             return;
 
         if (msg.Author.IsBot)
             return;
 
         bool isAdmin = false;
-        if (msg.Author.Id == adminID)
+        if (msg.Author.Id == _adminID)
             isAdmin = true;
 
         await CommandHandler.HandleCommandAsync(msg, args, argsLen, isAdmin);
