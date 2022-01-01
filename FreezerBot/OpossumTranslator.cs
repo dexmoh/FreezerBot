@@ -6,8 +6,16 @@ public static class OpossumTranslator
 {
     public static string Translate(string[] strings, int startingElement = 0)
     {
-        string translatedStr = "";
-        var rand = new Random();
+        // Use the strings array to get a seed for random number generator.
+        // We want same sentences to produce the same translations every time.
+        string seed = string.Empty;
+        foreach (string str in strings)
+            seed += str;
+
+        var rand = new Random(seed.GetHashCode());
+
+        // Behold: The Opossum Translator 9000!
+        string translatedStr = string.Empty;
 
         for (int i = startingElement; i < strings.Length; i++)
         {
