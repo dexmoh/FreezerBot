@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 
+// FAIL!
+eeeeeeeeeeeeeeeeeeee
+
 namespace FreezerBot;
 
 public static class Pins
