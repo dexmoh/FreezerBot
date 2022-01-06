@@ -25,7 +25,7 @@ class Program
     {
         IsRunning = true;
 
-        Prefix = System.IO.File.ReadAllText(@"data\prefix.txt");
+        Prefix = File.ReadAllText(@"data\prefix.txt");
         _adminID = Convert.ToUInt64(System.IO.File.ReadAllText(@"data\master.txt"));
 
         _client = new DiscordSocketClient();
