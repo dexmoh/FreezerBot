@@ -14,6 +14,13 @@ public static class Pins
         string keyword = GetKeyword(msg, args, argsLen);
         string pinsPath = GetPinsPath(msg);
 
+        // Check if the keyword is too long.
+        if (keyword.Length > 40)
+        {
+            await msg.Channel.SendMessageAsync("The keyword cant be more than 40 characters long.");
+            return;
+        }
+
         // Check if the keyword already exists.
         int counter = 0;
 
