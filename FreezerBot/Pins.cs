@@ -180,7 +180,7 @@ public static class Pins
             .WithValue(keywords)
             .WithIsInline(true);
         var listFooter = new EmbedFooterBuilder()
-            .WithText($"Page {page + 1}/{keywordList.Count / pageSize + 1}");
+            .WithText($"Page {page + 1}/{(keywordList.Count - 1) / pageSize + 1}");
         var listEmbed = new EmbedBuilder()
             .AddField(listField)
             .WithFooter(listFooter)
