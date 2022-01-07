@@ -1,5 +1,6 @@
 # FreezerBot
 [![Build Status](https://github.com/Ewwmewgewd/FreezerBot/workflows/.NET/badge.svg)](https://github.com/fabianishere/brainfuck/actions?query=workflow%3ABuild)
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
 A simple Discord bot that is an opossum.
 
