@@ -26,7 +26,7 @@ class Program
         IsRunning = true;
 
         Prefix = File.ReadAllText(@"data\prefix.txt");
-        _adminID = Convert.ToUInt64(System.IO.File.ReadAllText(@"data\master.txt"));
+        _adminID = Convert.ToUInt64(File.ReadAllText(@"data\master.txt"));
 
         _client = new DiscordSocketClient();
         _client.Log += LogAsync;
@@ -40,7 +40,7 @@ class Program
 
     public async Task MainAsync()
     {
-        await _client.LoginAsync(TokenType.Bot, System.IO.File.ReadAllText(@"data\token.txt"));
+        await _client.LoginAsync(TokenType.Bot, File.ReadAllText(@"data\token.txt"));
         await _client.StartAsync();
 
         // Keep running the program until its told to shutdown.
