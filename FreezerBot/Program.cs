@@ -31,10 +31,19 @@ class Program
         if (File.Exists(@"data\prefix.txt"))
             Prefix = File.ReadAllText(@"data\prefix.txt");
         else
-            Console.WriteLine("Couldn't find a 'prefix.txt' file inside data directory. Setting the bot's prefix to 'poss'.");
+            Console.WriteLine("Couldn't find a 'prefix.txt' file inside of data directory. Setting the bot's prefix to 'poss'.");
 
-        _adminID = Convert.ToUInt64(File.ReadAllText(@"data\master.txt"));
+        // Set admin ID.
+        _adminID = 0;
 
+        if (!File.Exists(@"data\master.txt"))
+            Console.WriteLine("Couldn't find a 'prefix.txt' file inside of data directory. Admin ID isn't set.");
+        else if (!UInt64.TryParse(File.ReadAllText(@"data\master.txt"), out ulong adminID))
+            Console.WriteLine("Couldn't parse admin ID inside of 'master.txt' file. Admin ID isn't set.");
+        else
+            _adminID = adminID;
+
+        // Set client and events.
         _client = new DiscordSocketClient();
         _client.Log += LogAsync;
         _client.Ready += ReadyAsync;
