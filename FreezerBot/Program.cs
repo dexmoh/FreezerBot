@@ -25,7 +25,14 @@ class Program
     {
         IsRunning = true;
 
-        Prefix = File.ReadAllText(@"data\prefix.txt");
+        // Set bot's prefix.
+        Prefix = "poss";
+
+        if (File.Exists(@"data\prefix.txt"))
+            Prefix = File.ReadAllText(@"data\prefix.txt");
+        else
+            Console.WriteLine("Couldn't find a 'prefix.txt' file inside data directory. Setting the bot's prefix to 'poss'.");
+
         _adminID = Convert.ToUInt64(System.IO.File.ReadAllText(@"data\master.txt"));
 
         _client = new DiscordSocketClient();
