@@ -114,7 +114,7 @@ public static class CommandHandler
 
                 var randImage = new Random();
                 int randomImage = randImage.Next(77);
-                string url = File.ReadLines(@"data\cute opossum images.txt").ElementAtOrDefault(randomImage);
+                string url = File.ReadLines(@"data/cute opossum images.txt").ElementAtOrDefault(randomImage);
                 await msg.Channel.SendMessageAsync(url);
                 break;
             case "facts":
@@ -130,7 +130,7 @@ public static class CommandHandler
                 // Build the embed.
                 var factField1 = new EmbedFieldBuilder()
                     .WithName("COOL OPOSSUM FACT!")
-                    .WithValue(File.ReadLines(@"data\facts.txt").ElementAtOrDefault(randomFact))
+                    .WithValue(File.ReadLines(@"data/facts.txt").ElementAtOrDefault(randomFact))
                     .WithIsInline(true);
                 var factEmbed = new EmbedBuilder()
                     .AddField(factField1)

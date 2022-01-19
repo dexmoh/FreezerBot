@@ -208,8 +208,8 @@ public static class Pins
         SocketGuildChannel channel = msg.Channel as SocketGuildChannel;
         SocketGuild guild = channel.Guild;
 
-        string serverPath = @$"data\servers\{guild.Id}";
-        string pinsPath = $@"{serverPath}\pins.txt";
+        string serverPath = @$"data/servers/{guild.Id}";
+        string pinsPath = $@"{serverPath}/pins.txt";
 
         if (!Directory.Exists(serverPath))
         {
