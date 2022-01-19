@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -13,13 +12,6 @@ public static class Pins
     {
         string keyword = GetKeyword(msg, args, argsLen);
         string pinsPath = GetPinsPath(msg);
-
-        // Check if the keyword is too long.
-        if (keyword.Length > 40)
-        {
-            await msg.Channel.SendMessageAsync("The keyword cant be more than 40 characters long.");
-            return;
-        }
 
         // Check if the keyword already exists.
         int counter = 0;
@@ -141,49 +133,33 @@ public static class Pins
         await msg.Channel.SendMessageAsync($"Successfully deleted \"{keyword}\".");
     }
 
-    public static async Task ListAsync(SocketMessage msg, int page = 0, int pageSize = 10)
+    public static async Task ListAsync(SocketMessage msg)
     {
-        // Get keywords from a pins.txt file and store them in keywordList.
         string pinsPath = GetPinsPath(msg);
         int counter = 0;
-        var keywordList = new List<string>();
+        string list = string.Empty;
 
         foreach (string line in File.ReadLines(pinsPath))
         {
             if (counter % 2 == 0)
-                keywordList.Add($"- {line}\n");
+                list += $"- {line}\n";
 
             counter++;
         }
 
-        if (keywordList.Count == 0)
+        if (list == string.Empty)
         {
             await msg.Channel.SendMessageAsync($"No saved pins found. Add some by using '{Program.Prefix} pin <keyword>' command!");
             return;
         }
 
-        // Get string of keywords to display.
-        string keywords = string.Empty;
-
-        for (int i = page * pageSize; (i < keywordList.Count) && (i < page * pageSize + pageSize); i++)
-            keywords += keywordList[i];
-
-        if (keywords == string.Empty)
-        {
-            await msg.Channel.SendMessageAsync($"Couldn't find any saved pins on page {page + 1}.");
-            return;
-        }
-
         // Build the embed.
-        var listField = new EmbedFieldBuilder()
+        var listField1 = new EmbedFieldBuilder()
             .WithName("Here's a list of all the keywords!")
-            .WithValue(keywords)
+            .WithValue(list)
             .WithIsInline(true);
-        var listFooter = new EmbedFooterBuilder()
-            .WithText($"Page {page + 1}/{(keywordList.Count - 1) / pageSize + 1}");
         var listEmbed = new EmbedBuilder()
-            .AddField(listField)
-            .WithFooter(listFooter)
+            .AddField(listField1)
             .WithColor(Color.Teal)
             .Build();
 
@@ -208,8 +184,8 @@ public static class Pins
         SocketGuildChannel channel = msg.Channel as SocketGuildChannel;
         SocketGuild guild = channel.Guild;
 
-        string serverPath = @$"data\servers\{guild.Id}";
-        string pinsPath = $@"{serverPath}\pins.txt";
+        string serverPath = @$"data/servers/{guild.Id}";
+        string pinsPath = $@"{serverPath}/pins.txt";
 
         if (!Directory.Exists(serverPath))
         {
