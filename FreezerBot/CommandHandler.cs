@@ -114,7 +114,7 @@ public static class CommandHandler
 
                 var randImage = new Random();
                 int randomImage = randImage.Next(77);
-                string url = File.ReadLines(@"data/cute opossum images.txt").ElementAtOrDefault(randomImage);
+                string url = File.ReadLines(@"data\cute opossum images.txt").ElementAtOrDefault(randomImage);
                 await msg.Channel.SendMessageAsync(url);
                 break;
             case "facts":
@@ -130,7 +130,7 @@ public static class CommandHandler
                 // Build the embed.
                 var factField1 = new EmbedFieldBuilder()
                     .WithName("COOL OPOSSUM FACT!")
-                    .WithValue(File.ReadLines(@"data/facts.txt").ElementAtOrDefault(randomFact))
+                    .WithValue(File.ReadLines(@"data\facts.txt").ElementAtOrDefault(randomFact))
                     .WithIsInline(true);
                 var factEmbed = new EmbedBuilder()
                     .AddField(factField1)
@@ -170,8 +170,29 @@ public static class CommandHandler
             case "list":
                 if (argsLen == 2)
                     await Pins.ListAsync(msg);
-                else if ((argsLen == 3) && (args[2] == "help"))
-                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.Prefix} list\n...\nShow a list of all saved embeds.```");
+                else if (argsLen == 3)
+                {
+                    if (args[2] == "help")
+                    {
+                        await msg.Channel.SendMessageAsync($"```Command usage: {Program.Prefix} list <page number>\n...\nShow a list of all saved embeds.```");
+                        break;
+                    }
+
+                    if (!Int32.TryParse(args[2], out int page))
+                    {
+                        await msg.Channel.SendMessageAsync("Third argument has to be a number.");
+                        break;
+                    }
+
+                    if (page < 1)
+                    {
+                        await msg.Channel.SendMessageAsync("Page number cant be less than 1.");
+                        break;
+                    }
+
+                    await Pins.ListAsync(msg, page - 1);
+                }
+
                 break;
             case "shutdown":
                 if ((argsLen == 3) && (args[2] == "help"))
