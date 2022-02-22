@@ -79,7 +79,7 @@ public static class CommandHandler
                     .WithName("Intro")
                     .WithValue("Hi, my name is Chilly, I'm an opossum! I live in the Freezer, it's quite cold in here! " +
                     "I'm still in very early development and some features might not work as intended, so cold tight! " +
-                    "Currently being hosted on Microsoft Azure VM. Built with Discord.Net (.NET 6.0).")
+                    "Currently being hosted in YOUR WALLS. Built with Discord.Net (.NET 6.0).")
                     .WithIsInline(true);
                 var aboutField2 = new EmbedFieldBuilder()
                     .WithName("GitHub")
