@@ -62,7 +62,7 @@ public class NationstatesClient
             embed.AddField(new EmbedFieldBuilder().WithName("Info").WithValue("Prefix your messages with `nationstates` to access nationstates commands."));
             embed.AddField(new EmbedFieldBuilder().WithName("Commands").WithValue(
                 "`info` - Display info about the nation.\n" +
-                "`list issues` - List all current issues.\ns" +
+                "`list issues` - List all current issues.\n" +
                 "`get issue <id>` - Show info about a specific issue.\n" +
                 "`answer issue <issue id> <option id>` - Answer an issue."));
             embed.AddField(new EmbedFieldBuilder().WithName("Disclaimer").WithValue("I just put this thing together in 2 days and it's probably full of bugs that I'll deal with eventually."));
@@ -140,6 +140,18 @@ public class NationstatesClient
             var issuesFooter = new EmbedFooterBuilder()
                 .WithText($"Requested by {msg.Author.Username}.")
                 .WithIconUrl(msg.Author.GetAvatarUrl());
+            var issuesEmbed = new EmbedBuilder()
+                .WithAuthor(issuesAuthor)
+                .WithFooter(issuesFooter)
+                .WithColor(Color.Teal);
+
+            if (issueIDs == string.Empty)
+            {
+                issuesEmbed.AddField(new EmbedFieldBuilder().WithName($"{_nationNameFull} is gloriously issue-free!").WithValue("Come back later when more issues are available."));
+                await msg.Channel.SendMessageAsync(null, false, issuesEmbed.Build());
+                return;
+            }
+            
             var issuesField1 = new EmbedFieldBuilder()
                 .WithName("ID")
                 .WithValue(issueIDs)
@@ -148,15 +160,9 @@ public class NationstatesClient
                 .WithName("Title")
                 .WithValue(issueTitles)
                 .WithIsInline(true);
-            var issuesEmbed = new EmbedBuilder()
-                .AddField(issuesField1)
-                .AddField(issuesField2)
-                .WithAuthor(issuesAuthor)
-                .WithFooter(issuesFooter)
-                .WithColor(Color.Teal)
-                .Build();
+            issuesEmbed.AddField(issuesField1).AddField(issuesField2);
 
-            await msg.Channel.SendMessageAsync(null, false, issuesEmbed);
+            await msg.Channel.SendMessageAsync(null, false, issuesEmbed.Build());
             return;
         }
     
