@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using TextGenerator;
+using Nationstates;
 
 namespace FreezerBot;
 
@@ -25,6 +26,9 @@ class Program
 
     // For random text generation.
     public static TextBot TextGenerator;
+
+    //
+    public static NationstatesClient NsClient;
 
     Program()
     {
@@ -50,6 +54,12 @@ class Program
 
         // Text generator stuff.
         TextGenerator = new TextBot("data/FreezerDataOutput.data", "data/FreezerDataParsedWords.txt");
+
+        //
+        NsClient = new NationstatesClient(
+            File.ReadLines("data/nationstates.txt").ElementAt(0),
+            File.ReadLines("data/nationstates.txt").ElementAt(1),
+            File.ReadLines("data/nationstates.txt").ElementAt(2));
 
         // Set client and events.
         _client = new DiscordSocketClient();
@@ -131,6 +141,12 @@ class Program
             MessageReference messageReference = new MessageReference(msg.Id, msg.Channel.Id);
             await msg.Channel.SendMessageAsync(TextGenerator.GenerateLine(), false, null, null, null, messageReference);
 
+            return;
+        }
+        
+        if (args[0] == "nationstates")
+        {
+            await NsClient.HandleCommandAsync(msg, args, argsLen);
             return;
         }
 
