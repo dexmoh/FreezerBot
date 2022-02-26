@@ -147,7 +147,8 @@ public class NationstatesClient
 
             if (issueIDs == string.Empty)
             {
-                issuesEmbed.AddField(new EmbedFieldBuilder().WithName($"{_nationNameFull} is gloriously issue-free!").WithValue("Come back later when more issues are available."));
+                string nextIssue = await FetchIssueTimeAsync();
+                issuesEmbed.AddField(new EmbedFieldBuilder().WithName($"{_nationNameFull} is gloriously issue-free!").WithValue($"Next issue will be available {nextIssue}."));
                 await msg.Channel.SendMessageAsync(null, false, issuesEmbed.Build());
                 return;
             }
@@ -361,6 +362,18 @@ public class NationstatesClient
         }
 
         return true;
+    }
+
+    private async Task<string> FetchIssueTimeAsync()
+    {
+        string uri = GetFullURI("nextissue");
+        HttpResponseMessage response = await _httpClient.GetAsync(uri);
+        if (!response.IsSuccessStatusCode)
+            return string.Empty;
+
+        var doc = new XmlDocument();
+        doc.LoadXml(await response.Content.ReadAsStringAsync());
+        return doc.SelectSingleNode("NATION").SelectSingleNode("NEXTISSUE").InnerText;
     }
 
     private async Task<List<(string ID, string Title)>> GetIssueSummaryAsync()
