@@ -84,11 +84,6 @@ class Program
 
     private Task LogAsync(LogMessage msg)
     {
-        // Log the messages to a file.
-        var sw = new StreamWriter("data/debug.log", true);
-        sw.WriteLine(msg.ToString());
-        sw.Close();
-
         Console.WriteLine(msg.ToString());
         return Task.CompletedTask;
     }
