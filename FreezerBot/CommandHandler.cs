@@ -47,7 +47,7 @@ public static class CommandHandler
                     .WithValue("`help/commands` - Show help menu.\n" +
                     "`about` - Show about page.\n" +
                     "`translate/say` - Translate human into opossum tongue!\n" +
-                    "`show poss` - Send a cute opossum image.\n" +
+                    "`show` - Search for an image online.\n" +
                     "`facts` - Tell a random opossum fact.\n");
                 var helpField3 = new EmbedFieldBuilder()
                     .WithName("Pins")
@@ -106,16 +106,40 @@ public static class CommandHandler
                 await msg.Channel.SendMessageAsync(OpossumTranslator.Translate(args, 2));
                 break;
             case "show":
-                if (argsLen == 2 || ((argsLen == 3) && (args[2] != "poss")))
+                if (argsLen != 3)
                 {
-                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.Prefix} show poss\n...\nSend a random opossum image!```");
+                    string searchTerms = string.Join(", ", Program.ImageSearchWhitelist.Keys.ToArray());
+
+                    await msg.Channel.SendMessageAsync($"```Command usage: {Program.Prefix} show <search term>" +
+                        $"\n..." +
+                        $"\nSearch for an image online!" +
+                        $"\nPossible search terms: " + searchTerms +
+                        $"```");
                     break;
                 }
 
-                var randImage = new Random();
-                int randomImage = randImage.Next(77);
-                string url = File.ReadLines(@"data/cute opossum images.txt").ElementAtOrDefault(randomImage);
-                await msg.Channel.SendMessageAsync(url);
+                if (Program.ImageSearch == null)
+                {
+                    await msg.Channel.SendMessageAsync("Image search is unavailable at the moment. :(");
+                    break;
+                }
+
+                string query = args[2];
+                if (!Program.ImageSearchWhitelist.ContainsKey(query))
+                {
+                    await msg.Channel.SendMessageAsync("Please enter a correct search term. " +
+                        "Use `poss show` command to get a list of available search terms.");
+                    break;
+                }
+
+                string link = await Program.ImageSearch.GallerySearchAsync(Program.ImageSearchWhitelist[query]);
+                if (link == "")
+                {
+                    await msg.Channel.SendMessageAsync("Couldn't find anything under that search term.");
+                    break;
+                }
+                
+                await msg.Channel.SendMessageAsync(link);
                 break;
             case "facts":
                 if ((argsLen == 3) && (args[2] == "help"))

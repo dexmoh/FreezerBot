@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -26,6 +27,12 @@ class Program
     // For random text generation.
     public static TextBot TextGenerator;
 
+    // The thing we're gonna use for image searching.
+    public static ImgurClient ImageSearch;
+
+    // List of allowed image search terms.
+    public static Dictionary<string, string> ImageSearchWhitelist;
+
     Program()
     {
         IsRunning = true;
@@ -50,6 +57,36 @@ class Program
 
         // Text generator stuff.
         TextGenerator = new TextBot("data/FreezerDataOutput.data", "data/FreezerDataParsedWords.txt");
+
+        // Imgur client.
+        string clientID = "";
+        if (File.Exists("data/imgur.txt"))
+            clientID = File.ReadAllText("data/imgur.txt");
+        else
+            Console.WriteLine("Couldn't find an 'imgur.txt' file inside of data directory. " +
+                "Image search feature won't be available.");
+
+        ImageSearch = null;
+        if (clientID != "")
+            ImageSearch = new ImgurClient("FreezerBot", clientID);
+
+        // Load image search terms.
+        ImageSearchWhitelist = new Dictionary<string, string>();
+
+        if (File.Exists("data/imgur_whitelist.txt"))
+        {
+            foreach (string line in File.ReadAllLines("data/imgur_whitelist.txt"))
+            {
+                string[] searchTerm = line.Split(':');
+                ImageSearchWhitelist.Add(searchTerm[0], searchTerm[1]);
+            }
+        }
+        else
+        {
+            Console.WriteLine("Couldn't find an 'imgur_whitelist.txt' file inside of data directory. " +
+                "Image search feature won't be available.");
+            ImageSearch = null;
+        }
 
         // Set client and events.
         _client = new DiscordSocketClient();

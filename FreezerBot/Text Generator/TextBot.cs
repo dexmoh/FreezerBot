@@ -80,7 +80,7 @@ public class TextBot
 
             for (int i = 0; i < args.Length; i++)
                 args[i] = args[i].Replace('`', ' ');
-
+            
             string word = args[0];
 
             // Compile list of links.
