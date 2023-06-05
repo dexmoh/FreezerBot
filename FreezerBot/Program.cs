@@ -136,10 +136,10 @@ class Program
         string[] args = msg.Content.ToLower().Split(' ');
         int argsLen = args.Length;
 
-        // Chilly has 0.8% chance to reply to a random message.
+        // Chilly has 0.4% chance to reply to a random message.
         var rand = new Random();
         double randDouble = rand.NextDouble();
-        if (randDouble < 0.008)
+        if (randDouble < 0.004)
         {
             await msg.Channel.SendMessageAsync(TextGenerator.GenerateLine());
         }
