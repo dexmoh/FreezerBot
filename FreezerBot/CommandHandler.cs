@@ -40,7 +40,7 @@ public static class CommandHandler
                     .WithName("Info")
                     .WithValue($"Prefix your messages with `{Program.Prefix}` to access bot's commands.\n" +
                     $" Use `{Program.Prefix} <command> help` to get more information regarding a specific command.\n" +
-                    $"You can suggest new features and report bugs on our GitHub page. Use `{Program.Prefix} about` command to find out more.")
+                    $"Use `{Program.Prefix} about` command to find out more about Chilly!")
                     .WithIsInline(true);
                 var helpField2 = new EmbedFieldBuilder()
                     .WithName("Basic Commands")
@@ -77,13 +77,13 @@ public static class CommandHandler
                     .WithIconUrl(msg.Author.GetAvatarUrl());
                 var aboutField1 = new EmbedFieldBuilder()
                     .WithName("Intro")
-                    .WithValue("Hi, my name is Chilly, I'm an opossum! I live in the Freezer, it's quite cold in here! " +
-                    "I'm still in very early development and some features might not work as intended, so cold tight! " +
-                    "Currently being hosted in YOUR WALLS. Built with Discord.Net (.NET 6.0).")
+                    .WithValue("Hi, I'm Chilly the opossum! I live in the Freezer and I say deranged stuff from time to time. " +
+                    "~~I'm still in very early development and some features might not work as intended, so cold tight!~~ my father has abandoned me :(\n" +
+                    "Currently being hosted ~~by AffectedArc~~ in YOUR WALLS. Built with Discord.Net (.NET 6.0).")
                     .WithIsInline(true);
                 var aboutField2 = new EmbedFieldBuilder()
                     .WithName("GitHub")
-                    .WithValue("Check out my GitHub page by clicking [here](https://github.com/Ewwmewgewd/FreezerBot).\n" +
+                    .WithValue("Check out my GitHub page by clicking [here](https://github.com/dexmoh/FreezerBot).\n" +
                     "You can suggest new features, changes and report bugs by opening a new issue, or you can contribute by opening a pull request!");
                 var aboutEmbed = new EmbedBuilder()
                     .AddField(aboutField1)
