@@ -1,4 +1,9 @@
-# FreezerBot
+> [!IMPORTANT]  
+> This version of FreezerBot is now deprecated and the repository is archived.
+>
+> Check out [FreezerBotPy](https://github.com/dexmoh/FreezerBotPy) for a new and improved version.
+
+# FreezerBot (Deprecated)
 [![Build Status](https://github.com/Ewwmewgewd/FreezerBot/workflows/.NET/badge.svg)](https://github.com/fabianishere/brainfuck/actions?query=workflow%3ABuild)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
@@ -17,6 +22,8 @@ The bot can:
 The code is released under the MIT License. See [LICENSE](/LICENSE).
 
 ## Invite
-You can invite the bot to your server from [top.gg](https://top.gg/bot/922823893125845032), or you can invite it directly by clicking [here](https://discord.com/api/oauth2/authorize?client_id=922823893125845032&permissions=68672&scope=bot).
+Bot invite links are no longer public, but Chilly won't leave any servers it's already been part of.
+
+Check out [FreezerBotPy](https://github.com/dexmoh/FreezerBotPy) if you want to host your own instance of FreezerBot.
 
 ![WEH](https://imgur.com/dRLQcoP.png)
